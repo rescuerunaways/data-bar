@@ -13,20 +13,24 @@ from docopt import docopt
 import requests
 import json
 from fn import _
+import operator
+
+#this value to change to ds one
+hardcode_best = 4.0
 
 def el(x): return [x['name'], isRanked(x)]
 
+def fl(x): return float(x[1])> hardcode_best
+
 def isRanked(x):
-    if ('rating' in x): return x['rating']
-    else: return 'not rated'
+    if 'rating' in x : return x['rating']
+    else: return 0.0
 
 def find(args):
     res = requests.get('https://maps.googleapis.com/maps/api/place/textsearch/json?location=-37.8251586,144.9605128&radius=400&type=bar&key=AIzaSyA6_gacsifsaFHXJeCWUlY6vAC2VH8pm7c')
 
-    parsed_json = json.loads(res.text)
-    list_json = parsed_json['results']
-
-    print(dict(map(el, list_json)))
+    l = json.loads(res.text)['results']
+    print(filter(fl, dict(map(el, l)).items()))
 
 if __name__ == '__main__':
     args = docopt(__doc__)
