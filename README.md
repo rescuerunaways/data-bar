@@ -1,2 +1,2 @@
 # scibar
-data-science backed bars search in your neighborhood
+bars search backed by data-science
